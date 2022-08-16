@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using ReferralApp.DTOs;
 using ReferralApp.Models;
@@ -23,16 +24,25 @@ namespace ReferralApp.Services
 
 		private const string BlobConnectionString = "DefaultEndpointsProtocol=https;AccountName=interoperabilityaccount;AccountKey=bR5O3YIcxsPqfrHRlapL0MNCx2k8taHax97RHjAbXLQGQ6BtRplLb8fPJ4031PhcHQq8LuX32uj0bLtCOaB0xw==;EndpointSuffix=core.windows.net";
 
+
+		private readonly IConfiguration _configuration;
+
+        public ReferralService(IConfiguration configuration)
+		{
+			_configuration = configuration;
+		}
 		public List<ReferralBlobDTO> GetBlobs()
         {
+			var blobConnectionString = _configuration.GetSection("BlobStorage").GetValue<string>("BlobConnectionString");
+			var blobContainerName = _configuration.GetSection("BlobStorage").GetValue<string>("ContainerName");
+
 			List<ReferralBlobDTO> BlobsList = new List<ReferralBlobDTO>();
-			BlobServiceClient blobServiceClient = new BlobServiceClient(BlobConnectionString);
-			BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("ccn");
+			BlobServiceClient blobServiceClient = new BlobServiceClient(blobConnectionString);
+			BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
 
 			JsonSerializer serializer = new JsonSerializer();
 			foreach (BlobItem blobItem in containerClient.GetBlobs())
 			{
-				
 				BlobClient blobClient = containerClient.GetBlobClient(blobItem.Name);
 	
 				MemoryStream blobStream = new MemoryStream();
