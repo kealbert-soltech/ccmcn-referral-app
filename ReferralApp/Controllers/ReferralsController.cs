@@ -27,11 +27,12 @@ namespace ReferralApp
         // GET: Referrals
         public IActionResult Index()
         {
-            _referralService.GetBlobs();
             List<Referral> referralList = _referralService.GetReferrals().OrderByDescending(r => r.DateUpdated).ToList();
             HttpContext.Session.SetString("referralList", JsonConvert.SerializeObject(referralList));
             return View(referralList);
         }
+
+
 
         // GET: Referrals/Details/5
         public IActionResult Details(string id)

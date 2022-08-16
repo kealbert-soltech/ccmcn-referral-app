@@ -1,0 +1,49 @@
+﻿@model IEnumerable<ReferralApp.Models.Blob>
+
+@{
+    ViewData["Title"] = "Blob List";
+}
+
+<h1>Blob List</h1>
+S
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ReferralId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Uri)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReferralId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Uri)
+                </td>
+
+                <td>
+                    @*<a asp-action="Edit" asp-route-id="@item.ExistingReferralId">Update Status</a> |
+                    <a asp-action="Details" asp-route-id="@item.ExistingReferralId">Details</a>*@
+                    @*<a asp-action="Delete" asp-route-id="@item.ExistingReferralId">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
