@@ -22,9 +22,6 @@ namespace ReferralApp.Services
 		private const string UpdateReferralStatusRequestType = "updateReferralStatus";
 		private const string SearchProgramsRequestType = "searchPrograms";
 
-		private const string BlobConnectionString = "DefaultEndpointsProtocol=https;AccountName=interoperabilityaccount;AccountKey=bR5O3YIcxsPqfrHRlapL0MNCx2k8taHax97RHjAbXLQGQ6BtRplLb8fPJ4031PhcHQq8LuX32uj0bLtCOaB0xw==;EndpointSuffix=core.windows.net";
-
-
 		private readonly IConfiguration _configuration;
 
         public ReferralService(IConfiguration configuration)
