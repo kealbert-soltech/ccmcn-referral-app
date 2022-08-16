@@ -28,12 +28,12 @@ namespace ReferralApp.Services
 		{
 			_configuration = configuration;
 		}
-		public List<ReferralBlobDTO> GetBlobs()
+		public List<Blob> GetBlobs()
         {
 			var blobConnectionString = _configuration.GetSection("BlobStorage").GetValue<string>("BlobConnectionString");
 			var blobContainerName = _configuration.GetSection("BlobStorage").GetValue<string>("ContainerName");
 
-			List<ReferralBlobDTO> BlobsList = new List<ReferralBlobDTO>();
+			List<Blob> BlobsList = new List<Blob>();
 			BlobServiceClient blobServiceClient = new BlobServiceClient(blobConnectionString);
 			BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
 
@@ -49,7 +49,7 @@ namespace ReferralApp.Services
 				var contents = reader.ReadToEnd();
 
 				var dto = JsonConvert.DeserializeObject<ReferralBlobDTO>(contents);
-				BlobsList.Add(dto);
+				BlobsList.Add(dto.ReferralCreated.referral.ConvertToBlob());
 			}
 			return BlobsList;
 

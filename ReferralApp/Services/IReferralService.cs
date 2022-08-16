@@ -18,7 +18,7 @@ namespace ReferralApp.Services
 
 		List<SelectListItem> GetPrograms(Referral referral);
 
-		List<ReferralBlobDTO> GetBlobs();
+		List<Blob> GetBlobs();
 
 	}
 }

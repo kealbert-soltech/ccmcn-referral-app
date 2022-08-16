@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ReferralApp.Data;
+using ReferralApp.DTOs;
 using ReferralApp.Models;
 using ReferralApp.Services;
 
@@ -30,6 +31,14 @@ namespace ReferralApp
             List<Referral> referralList = _referralService.GetReferrals().OrderByDescending(r => r.DateUpdated).ToList();
             HttpContext.Session.SetString("referralList", JsonConvert.SerializeObject(referralList));
             return View(referralList);
+        }
+
+        public IActionResult Blobs()
+        {
+            ViewData["UserFlow"] = "Get Blobs";
+            var blobList = _referralService.GetBlobs();
+            HttpContext.Session.SetString("blobList", JsonConvert.SerializeObject(blobList));
+            return View(blobList);
         }
 
 
@@ -55,6 +64,14 @@ namespace ReferralApp
         {
             ViewData["UserFlow"] = "Get Programs";
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RefreshBlobs()
+        {
+
+            return RedirectToAction(nameof(Blobs));
         }
 
         // POST: Referrals/Create
