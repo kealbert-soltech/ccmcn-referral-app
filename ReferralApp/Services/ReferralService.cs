@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using ReferralApp.DTOs;
 using ReferralApp.Models;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -18,6 +21,32 @@ namespace ReferralApp.Services
 		private const string UpdateReferralStatusRequestType = "updateReferralStatus";
 		private const string SearchProgramsRequestType = "searchPrograms";
 
+		private const string BlobConnectionString = "DefaultEndpointsProtocol=https;AccountName=interoperabilityaccount;AccountKey=bR5O3YIcxsPqfrHRlapL0MNCx2k8taHax97RHjAbXLQGQ6BtRplLb8fPJ4031PhcHQq8LuX32uj0bLtCOaB0xw==;EndpointSuffix=core.windows.net";
+
+		public List<ReferralBlobDTO> GetBlobs()
+        {
+			List<ReferralBlobDTO> BlobsList = new List<ReferralBlobDTO>();
+			BlobServiceClient blobServiceClient = new BlobServiceClient(BlobConnectionString);
+			BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("ccn");
+
+			JsonSerializer serializer = new JsonSerializer();
+			foreach (BlobItem blobItem in containerClient.GetBlobs())
+			{
+				
+				BlobClient blobClient = containerClient.GetBlobClient(blobItem.Name);
+	
+				MemoryStream blobStream = new MemoryStream();
+				_ = blobClient.DownloadTo(blobStream);
+				StreamReader reader = new StreamReader(blobStream);
+				blobStream.Position = 0;
+				var contents = reader.ReadToEnd();
+
+				var dto = JsonConvert.DeserializeObject<ReferralBlobDTO>(contents);
+				BlobsList.Add(dto);
+			}
+			return BlobsList;
+
+		}
 
 		public List<Referral> GetReferrals()
 		{

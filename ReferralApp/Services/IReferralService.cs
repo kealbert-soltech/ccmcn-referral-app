@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using ReferralApp.DTOs;
 using ReferralApp.Models;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,8 @@ namespace ReferralApp.Services
 		void UpdateReferral(Referral referral);
 
 		List<SelectListItem> GetPrograms(Referral referral);
+
+		List<ReferralBlobDTO> GetBlobs();
+
 	}
 }
